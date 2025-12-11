@@ -138,7 +138,24 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # OpenAI API 키 가져오기
-openai_api_key = st.secrets["OPENAI_API_KEY"]
+try:
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+except KeyError:
+    st.error("🔑 **API 키 설정이 필요합니다!**")
+    st.info("""
+    **Streamlit Cloud에서 실행 중이신가요?**
+    
+    1. 앱 우측 하단의 'Manage app' 클릭
+    2. Settings → Secrets 메뉴로 이동
+    3. 아래 내용을 복사하여 붙여넣기:
+    
+    ```
+    OPENAI_API_KEY="여기에_당신의_OpenAI_API_키를_입력하세요"
+    ```
+    
+    4. Save 버튼 클릭 후 앱이 자동으로 재시작됩니다.
+    """)
+    st.stop()
 
 # OpenAI 클라이언트 초기화
 client = OpenAI(api_key=openai_api_key)
